@@ -1,10 +1,14 @@
 <h2>Guardar Proyecto</h2>
-<form method="post" action="/guardar_proyecto">
+<form method="post" action="/proyecto">
+  <% if tipo=='modificar' %>
+    <input type="hidden" name="id" value="<%= proyecto.id%>">
+  <% end %>
   <div class="form-group">
     <label for="nombre">Nombre Proyecto</label>
     <input type="text" class="form-control"
       id="nombre" aria-describedby="nombre_proyecto"
       name="nombre"
+      value="<% if defined? proyecto %><%= proyecto.nombre%><% end %>"
       placeholder="Ingrese nombre de proyecto">
     <small id="emailHelp" class="form-text text-muted">
       Trate de ser descriptivo.
@@ -13,20 +17,32 @@
   <div class="form-group">
     <label for="ciclo">Ciclo</label>
     <select class="form-control custom-select" name="ciclo">
-      <option value="2017-1">2017-1</option>
-      <option value="2017-2">2017-2</option>
+      <option value="2017-1" 
+        <% if defined?(proyecto) && proyecto.ciclo == '2017-1' %>selected="selected"<% end %>
+      >
+        2017-1
+      </option>
+      <option value="2017-2" 
+        <% if defined?(proyecto) && proyecto.ciclo == '2017-2' %>selected="selected"<% end %>
+      >
+        2017-2
+      </option>
     </select>
   </div>
   <div class="form-group">
     <label for="curso">Curso</label>
     <select class="form-control custom-select" name="curso">
-      <option value="PW">Programación Web</option>
-      <option value="2017-2">Ingeniería de Software</option>
+      <% cursos.each do |curso|%>
+        <option value="<%= curso.id%>"
+          <% if defined?(proyecto) && proyecto.curso==curso.id %>selected="selected"<% end %>
+        ><%= curso.nombre%></option>
+      <% end %>
     </select>
   </div>
   <div class="form-group">
     <label for="descripcion">Descripción</label>
-    <textarea class="form-control" name="descripcion"></textarea>
+    <textarea class="form-control" name="descripcion"><% if defined? proyecto %><%= proyecto.descripcion%><% end %></textarea>
   </div>
+  <input type="hidden" name="tipo" value="<%= tipo %>">
   <button type="submit" class="btn btn-primary">Guardar</button>
 </form>

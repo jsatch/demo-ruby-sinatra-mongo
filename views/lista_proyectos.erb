@@ -10,13 +10,13 @@
     <div class="card">
       <div class="card-body">
         <h4 class="card-title">
-          <%= proyecto[:nombre] %>
+          <%= proyecto.nombre %>
         </h4>
         <p class="card-text">
-          Ciclo <%= proyecto[:ciclo] %>
+          Ciclo <%= proyecto.ciclo %>
         </p> 
-        <a href="#" class="btn btn-primary">Editar</a>
-        <a href="#" class="btn btn-primary">Eliminar</a>
+        <a href="/proyecto/modificar?id=<%= proyecto.id %>" class="btn btn-primary">Editar</a>
+        <a href="/proyecto/eliminar?id=<%= proyecto.id %>" class="btn btn-primary">Eliminar</a>
       </div>
     </div>
   <% end %>
