@@ -6,6 +6,10 @@ class PGConnector
     def initialize(host, database, user, password)
         @client = Sequel.connect("postgres://#{user}:#{password}@#{host}/#{database}")
     end
+
+    def initialize(database_url)
+        @client = Sequel.connect(database_url)
+    end
     
     def close
         @client.disconnect

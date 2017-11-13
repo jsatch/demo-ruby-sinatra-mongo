@@ -4,7 +4,7 @@ require_relative 'models/dao_pg'
 require_relative 'config' 
 
 get '/proyecto' do
-  connector = PGConnector.new PG_HOST, PG_DATABASE, PG_USER, PG_PASSWORD
+  connector = PGConnector.new PG_URL
   cursoDAO = CursoPGDAO.new connector.client 
   cursos = cursoDAO.list
   connector.close
@@ -13,7 +13,7 @@ get '/proyecto' do
 end
 
 get '/proyecto/modificar' do
-  connector = PGConnector.new PG_HOST, PG_DATABASE, PG_USER, PG_PASSWORD
+  connector = PGConnector.new PG_URL
   proyectoDAO = ProyectoPGDAO.new connector.client
   proyecto = proyectoDAO.get params[:id]
   cursoDAO = CursoPGDAO.new connector.client
@@ -27,7 +27,7 @@ get '/proyecto/modificar' do
 end
 
 get '/proyecto/eliminar' do
-  connector = PGConnector.new PG_HOST, PG_DATABASE, PG_USER, PG_PASSWORD
+  connector = PGConnector.new PG_URL
   proyectoDAO = ProyectoPGDAO.new connector.client
   proyectoDAO.delete params[:id] 
   connector.close
@@ -43,7 +43,7 @@ get '/proyecto/listar' do
   #   {:nombre=>"Proyecto 4", :ciclo=>"2017-2"},
   #   {:nombre=>"Proyecto 5", :ciclo=>"2017-2"},
   # ]
-  connector = PGConnector.new PG_HOST, PG_DATABASE, PG_USER, PG_PASSWORD
+  connector = PGConnector.new PG_URL
   proyectoDAO = ProyectoPGDAO.new connector.client
   proyectos = proyectoDAO.list 
   connector.close
@@ -52,7 +52,7 @@ get '/proyecto/listar' do
 end
 
 post '/proyecto' do
-  connector = PGConnector.new PG_HOST, PG_DATABASE, PG_USER, PG_PASSWORD
+  connector = PGConnector.new PG_URL
   if params[:tipo] == 'nuevo'
     proyecto = Proyecto.new
     proyecto.nombre = params[:nombre]
