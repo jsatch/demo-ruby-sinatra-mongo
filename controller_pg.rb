@@ -1,12 +1,11 @@
 require 'sinatra'
 require_relative 'models/models'
-require_relative 'models/dao'
+require_relative 'models/dao_pg'
 require_relative 'config' 
 
 get '/proyecto' do
-  connector = MongoConnector.new MONGO_HOST, MONGO_DATABASE
-  connector = 
-  cursoDAO = CursoDAO.new connector.client 
+  connector = PGConnector.new PG_HOST, PG_DATABASE, PG_USER, PG_PASSWORD
+  cursoDAO = CursoPGDAO.new connector.client 
   cursos = cursoDAO.list
   connector.close
 
@@ -14,10 +13,10 @@ get '/proyecto' do
 end
 
 get '/proyecto/modificar' do
-  connector = MongoConnector.new MONGO_HOST, MONGO_DATABASE
-  proyectoDAO = ProyectoDAO.new connector.client
+  connector = PGConnector.new PG_HOST, PG_DATABASE, PG_USER, PG_PASSWORD
+  proyectoDAO = ProyectoPGDAO.new connector.client
   proyecto = proyectoDAO.get params[:id]
-  cursoDAO = CursoDAO.new connector.client
+  cursoDAO = CursoPGDAO.new connector.client
   cursos = cursoDAO.list
   connector.close
 
@@ -28,8 +27,8 @@ get '/proyecto/modificar' do
 end
 
 get '/proyecto/eliminar' do
-  connector = MongoConnector.new MONGO_HOST, MONGO_DATABASE
-  proyectoDAO = ProyectoDAO.new connector.client
+  connector = PGConnector.new PG_HOST, PG_DATABASE, PG_USER, PG_PASSWORD
+  proyectoDAO = ProyectoPGDAO.new connector.client
   proyectoDAO.delete params[:id] 
   connector.close
 
@@ -44,8 +43,8 @@ get '/proyecto/listar' do
   #   {:nombre=>"Proyecto 4", :ciclo=>"2017-2"},
   #   {:nombre=>"Proyecto 5", :ciclo=>"2017-2"},
   # ]
-  connector = MongoConnector.new MONGO_HOST, MONGO_DATABASE
-  proyectoDAO = ProyectoDAO.new connector.client
+  connector = PGConnector.new PG_HOST, PG_DATABASE, PG_USER, PG_PASSWORD
+  proyectoDAO = ProyectoPGDAO.new connector.client
   proyectos = proyectoDAO.list 
   connector.close
 
@@ -53,7 +52,7 @@ get '/proyecto/listar' do
 end
 
 post '/proyecto' do
-  connector = MongoConnector.new MONGO_HOST, MONGO_DATABASE
+  connector = PGConnector.new PG_HOST, PG_DATABASE, PG_USER, PG_PASSWORD
   if params[:tipo] == 'nuevo'
     proyecto = Proyecto.new
     proyecto.nombre = params[:nombre]
@@ -63,7 +62,7 @@ post '/proyecto' do
     proyecto.estado = 'A'
   
     
-    proyectoDAO = ProyectoDAO.new connector.client
+    proyectoDAO = ProyectoPGDAO.new connector.client
     proyectoDAO.add proyecto
     connector.close
   
@@ -78,7 +77,7 @@ post '/proyecto' do
     proyecto.estado = 'A'
   
     
-    proyectoDAO = ProyectoDAO.new connector.client
+    proyectoDAO = ProyectoPGDAO.new connector.client
     proyectoDAO.modify proyecto
     connector.close
   
